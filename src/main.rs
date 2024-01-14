@@ -1,5 +1,6 @@
 #![allow(dead_code)]
 use bevy::prelude::*;
+use rand::prelude::*;
 
 #[derive(Component, Debug)]
 struct Position {
