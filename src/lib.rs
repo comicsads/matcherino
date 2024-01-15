@@ -19,9 +19,6 @@ pub fn start_drag(
 	window_query: Query<&Window>,
 	buttons: Res<Input<MouseButton>>,
 ) {
-	let _ = query;
-	let _ = window_query;
-	let _ = buttons;
 	if buttons.pressed(MouseButton::Left) {
 		for mut sprite_pos in &mut query {
 			let single = &window_query.single();
@@ -29,19 +26,20 @@ pub fn start_drag(
 				let x = m_pos.x - single.width() / 2.0;
 				let y = m_pos.y - single.height() / 2.0;
 				let y = y * -1.0;
-				let real_pos = Vec3::new(x, y, 100.0);
+
+				let mouse_pos_adjusted = Vec3::new(x, y, 100.0);
 
 				let collide = bevy::sprite::collide_aabb::collide(
 					sprite_pos.translation,
 					Vec2::new(GEM_SIZE, GEM_SIZE),
-					real_pos,
+					mouse_pos_adjusted,
 					Vec2::new(GEM_SIZE, GEM_SIZE),
 				);
 
 				match collide {
 					Some(_) => {
-						sprite_pos.translation.x = real_pos.x;
-						sprite_pos.translation.y = real_pos.y;
+						sprite_pos.translation.x = mouse_pos_adjusted.x;
+						sprite_pos.translation.y = mouse_pos_adjusted.y;
 					}
 					None => (),
 				}
