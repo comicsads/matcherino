@@ -1,4 +1,4 @@
-use bevy::prelude::*;
+use bevy::{input::mouse::MouseButtonInput, prelude::*};
 
 mod orb;
 pub use orb::OrbPlugin;
@@ -17,28 +17,30 @@ pub struct Orb;
 pub fn start_drag(
 	query: Query<(&Transform, Entity), With<Draggable>>,
 	window_query: Query<&Window>,
-	buttons: Res<Input<MouseButton>>,
 	mut commands: Commands,
+	mut mouse_event_reader: EventReader<MouseButtonInput>,
 ) {
-	if buttons.just_pressed(MouseButton::Left) {
-		for (sprite_pos, e_id) in query.iter() {
-			let single = window_query.single();
-			if let Some(m_pos) = single.cursor_position() {
-				let mouse_pos_adjusted = adjust_mouse_pos(m_pos, single);
+	for mouse_event in mouse_event_reader.read() {
+		if mouse_event.button == MouseButton::Left && mouse_event.state.is_pressed() {
+			for (sprite_pos, e_id) in query.iter() {
+				let single = window_query.single();
+				if let Some(m_pos) = single.cursor_position() {
+					let mouse_pos_adjusted = adjust_mouse_pos(m_pos, single);
 
-				let collide = bevy::sprite::collide_aabb::collide(
-					sprite_pos.translation,
-					Vec2::new(GEM_SIZE, GEM_SIZE),
-					mouse_pos_adjusted,
-					Vec2::new(GEM_SIZE, GEM_SIZE),
-				);
+					let collide = bevy::sprite::collide_aabb::collide(
+						sprite_pos.translation,
+						Vec2::new(GEM_SIZE, GEM_SIZE),
+						mouse_pos_adjusted,
+						Vec2::new(GEM_SIZE, GEM_SIZE),
+					);
 
-				match collide {
-					Some(_) => {
-						commands.entity(e_id).insert(Dragging);
-						break;
+					match collide {
+						Some(_) => {
+							commands.entity(e_id).insert(Dragging);
+							break;
+						}
+						None => (),
 					}
-					None => (),
 				}
 			}
 		}
