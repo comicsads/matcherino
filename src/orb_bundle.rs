@@ -22,23 +22,22 @@ fn add_orbs(mut commands: Commands, asset_server: Res<AssetServer>) {
 pub struct OrbBundle {
 	orb: Orb,
 	sprite: SpriteBundle,
-	pos: Position,
 	drag: Draggable,
 }
 
 impl OrbBundle {
-	pub fn new(pos_x: f64, pos_y: f64, texture: Handle<Image>) -> Self {
+	pub fn new(pos_x: f32, pos_y: f32, texture: Handle<Image>) -> Self {
 		OrbBundle {
 			orb: Orb,
 			sprite: SpriteBundle {
 				transform: Transform {
+					translation: Vec3::new(pos_x, pos_y, 0.0),
 					scale: Vec3::new(0.1, 0.1, 100.0),
 					..default()
 				},
 				texture,
 				..default()
 			},
-			pos: Position::new(pos_x, pos_y),
 			drag: Draggable,
 		}
 	}
