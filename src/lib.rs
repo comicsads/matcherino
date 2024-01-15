@@ -1,5 +1,8 @@
 use bevy::prelude::*;
 
+mod orb;
+pub use orb::OrbPlugin;
+
 const GEM_SIZE: f32 = 100.0;
 
 #[derive(Component, Debug)]

@@ -1,5 +1,4 @@
-use bevy::prelude::*;
-use matcherino::*;
+use crate::*;
 
 pub struct OrbPlugin;
 
@@ -9,8 +8,7 @@ impl Plugin for OrbPlugin {
 			.add_systems(Startup, add_orbs);
 	}
 }
-
-fn add_orbs(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub fn add_orbs(mut commands: Commands, asset_server: Res<AssetServer>) {
 	commands.spawn(OrbBundle::new(
 		0.0,
 		0.0,
@@ -44,7 +42,7 @@ impl OrbBundle {
 }
 
 //TODO: This is probably a bad way of getting sprites to follow entities
-fn update_sprites(mut query: Query<(&mut Transform, &Position)>) {
+pub fn update_sprites(mut query: Query<(&mut Transform, &Position)>) {
 	for (mut tra, pos) in &mut query {
 		tra.translation.x = pos.x as f32;
 		tra.translation.y = pos.y as f32;

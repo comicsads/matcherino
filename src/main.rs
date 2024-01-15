@@ -1,9 +1,6 @@
 use bevy::prelude::*;
 use matcherino::*;
-// use orb_bundle::OrbBundle;
 // use rand::prelude::*;
-
-mod orb_bundle;
 
 #[cfg(debug_assertions)]
 const WINDOW_HEIGHT: f32 = 2400.0 * 0.6;
@@ -25,7 +22,7 @@ fn main() {
 			}),
 			..default()
 		}))
-		.add_plugins(orb_bundle::OrbPlugin)
+		.add_plugins(OrbPlugin)
 		.add_systems(Startup, setup)
 		.add_systems(Update, start_drag)
 		.run();
