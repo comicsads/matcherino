@@ -36,12 +36,12 @@ pub fn start_drag(
 				let x = m_pos.x - single.width() / 2.0;
 				let y = m_pos.y - single.height() / 2.0;
 				let y = y * -1.0;
-				let real_pos = Vec2::new(x, y);
+				let real_pos = Vec3::new(x, y, 100.0);
 
 				let collide = bevy::sprite::collide_aabb::collide(
 					sprite_pos.translation,
 					Vec2::new(30.0, 30.0),
-					sprite_pos.translation,
+					real_pos,
 					Vec2::new(30.0, 30.0),
 				);
 
