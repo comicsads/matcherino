@@ -29,7 +29,7 @@ impl OrbBundle {
 			sprite: SpriteBundle {
 				transform: Transform {
 					translation: Vec3::new(pos_x, pos_y, 0.0),
-					scale: Vec3::new(0.1, 0.1, 100.0),
+					scale: Vec3::new(0.5, 0.5, 100.0),
 					..default()
 				},
 				texture,
