@@ -15,19 +15,16 @@ pub struct Dragging;
 pub struct Orb;
 
 pub fn start_drag(
-	mut query: Query<&mut Transform, With<Draggable>>,
+	mut query: Query<(&mut Transform, Entity), With<Draggable>>,
 	window_query: Query<&Window>,
 	buttons: Res<Input<MouseButton>>,
+	mut commands: Commands,
 ) {
-	if buttons.pressed(MouseButton::Left) {
-		for mut sprite_pos in &mut query {
+	if buttons.just_pressed(MouseButton::Left) {
+		for (mut sprite_pos, e_id) in &mut query {
 			let single = &window_query.single();
 			if let Some(m_pos) = single.cursor_position() {
-				let x = m_pos.x - single.width() / 2.0;
-				let y = m_pos.y - single.height() / 2.0;
-				let y = y * -1.0;
-
-				let mouse_pos_adjusted = Vec3::new(x, y, 100.0);
+				let mouse_pos_adjusted = adjust_mouse_pos(m_pos, single);
 
 				let collide = bevy::sprite::collide_aabb::collide(
 					sprite_pos.translation,
@@ -38,12 +35,40 @@ pub fn start_drag(
 
 				match collide {
 					Some(_) => {
-						sprite_pos.translation.x = mouse_pos_adjusted.x;
-						sprite_pos.translation.y = mouse_pos_adjusted.y;
+						commands.entity(e_id).insert(Dragging);
 					}
 					None => (),
 				}
 			}
 		}
 	}
+}
+
+pub fn time_to_drag(
+	mut query: Query<(&mut Transform, Entity), With<Dragging>>,
+	window_query: Query<&Window>,
+	buttons: Res<Input<MouseButton>>,
+	mut commands: Commands,
+) {
+	//TODO: This function is being run when supposedly no entities have Dragging component
+	for (mut sprite_pos, e_id) in &mut query {
+		let single = &window_query.single();
+		if let Some(m_pos) = single.cursor_position() {
+			let mouse_pos_adjusted = adjust_mouse_pos(m_pos, single);
+			sprite_pos.translation.x = mouse_pos_adjusted.x;
+			sprite_pos.translation.y = mouse_pos_adjusted.y;
+		}
+		if !buttons.pressed(MouseButton::Left) {
+			commands.entity(e_id).remove::<Dragging>();
+		}
+	}
+}
+
+fn adjust_mouse_pos(m_pos: Vec2, single: &&Window) -> Vec3 {
+	let x = m_pos.x - single.width() / 2.0;
+	let y = m_pos.y - single.height() / 2.0;
+	let y = y * -1.0;
+
+	let mouse_pos_adjusted = Vec3::new(x, y, 100.0);
+	mouse_pos_adjusted
 }

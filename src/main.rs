@@ -25,24 +25,10 @@ fn main() {
 		.add_plugins(OrbPlugin)
 		.add_systems(Startup, setup)
 		.add_systems(Update, start_drag)
+		.add_systems(Update, time_to_drag)
 		.run();
 }
 
 fn setup(mut commands: Commands) {
 	commands.spawn(Camera2dBundle::default());
-	/*
-	commands.spawn((
-		Orb,
-		Position::new(0.0, 0.0),
-		SpriteBundle {
-			texture: asset_server.load("sprites/orb.png"),
-			transform: Transform {
-				translation: Vec3::ZERO,
-				scale: Vec3::new(0.1, 0.1, 0.0),
-				..default()
-			},
-			..default()
-		},
-	));
-	*/
 }
