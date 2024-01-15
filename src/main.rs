@@ -2,8 +2,8 @@
 #![allow(unreachable_code)]
 use bevy::prelude::*;
 use matcherino::*;
-use orb_bundle::OrbBundle;
-use rand::prelude::*;
+// use orb_bundle::OrbBundle;
+// use rand::prelude::*;
 
 mod orb_bundle;
 
@@ -29,10 +29,11 @@ fn main() {
 		}))
 		.add_plugins(orb_bundle::OrbPlugin)
 		.add_systems(Startup, setup)
+		.add_systems(Update, start_drag)
 		.run();
 }
 
-fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
+fn setup(mut commands: Commands) {
 	commands.spawn(Camera2dBundle::default());
 	/*
 	commands.spawn((

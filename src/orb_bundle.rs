@@ -23,6 +23,7 @@ pub struct OrbBundle {
 	orb: Orb,
 	sprite: SpriteBundle,
 	pos: Position,
+	drag: Draggable,
 }
 
 impl OrbBundle {
@@ -38,6 +39,7 @@ impl OrbBundle {
 				..default()
 			},
 			pos: Position::new(pos_x, pos_y),
+			drag: Draggable,
 		}
 	}
 }
