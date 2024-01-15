@@ -3,7 +3,8 @@ use bevy::{input::mouse::MouseButtonInput, prelude::*};
 mod orb;
 pub use orb::OrbPlugin;
 
-const GEM_SIZE: f32 = 100.0;
+const GEM_SIZE: f32 = 75.0;
+const GRID_SIZE: f32 = GEM_SIZE;
 
 #[derive(Component)]
 pub struct Draggable;
@@ -58,8 +59,8 @@ pub fn time_to_drag(
 		let main_window = &window_query.single();
 		if let Some(m_pos) = main_window.cursor_position() {
 			let mouse_pos_adjusted = adjust_mouse_pos(m_pos, main_window);
-			sprite_pos.translation.x = mouse_pos_adjusted.x;
-			sprite_pos.translation.y = mouse_pos_adjusted.y;
+			sprite_pos.translation.x = (mouse_pos_adjusted.x / GRID_SIZE).round() * GRID_SIZE;
+			sprite_pos.translation.y = (mouse_pos_adjusted.y / GRID_SIZE).round() * GRID_SIZE;
 		}
 		if !buttons.pressed(MouseButton::Left) {
 			commands.entity(e_id).remove::<Dragging>();
