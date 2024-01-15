@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-#![allow(unreachable_code)]
 use bevy::prelude::*;
 use matcherino::*;
 // use orb_bundle::OrbBundle;
