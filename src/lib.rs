@@ -36,6 +36,7 @@ pub fn start_drag(
 				match collide {
 					Some(_) => {
 						commands.entity(e_id).insert(Dragging);
+						break;
 					}
 					None => (),
 				}

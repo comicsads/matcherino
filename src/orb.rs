@@ -13,6 +13,11 @@ pub fn add_orbs(mut commands: Commands, asset_server: Res<AssetServer>) {
 		0.0,
 		asset_server.load("sprites/orb.png"),
 	));
+	commands.spawn(OrbBundle::new(
+		100.0,
+		100.0,
+		asset_server.load("sprites/orb.png"),
+	));
 }
 
 #[derive(Bundle)]
