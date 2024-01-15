@@ -15,13 +15,13 @@ pub struct Dragging;
 pub struct Orb;
 
 pub fn start_drag(
-	mut query: Query<(&mut Transform, Entity), With<Draggable>>,
+	query: Query<(&Transform, Entity), With<Draggable>>,
 	window_query: Query<&Window>,
 	buttons: Res<Input<MouseButton>>,
 	mut commands: Commands,
 ) {
 	if buttons.just_pressed(MouseButton::Left) {
-		for (mut sprite_pos, e_id) in &mut query {
+		for (sprite_pos, e_id) in query.iter() {
 			let single = &window_query.single();
 			if let Some(m_pos) = single.cursor_position() {
 				let mouse_pos_adjusted = adjust_mouse_pos(m_pos, single);
