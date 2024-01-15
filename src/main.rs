@@ -2,6 +2,16 @@
 use bevy::prelude::*;
 use rand::prelude::*;
 
+#[cfg(debug_assertions)]
+const WINDOW_HEIGHT: f32 = 2400.0 * 0.6;
+#[cfg(debug_assertions)]
+const WINDOW_WIDTH: f32 = 1080.0 * 0.6;
+
+#[cfg(not(debug_assertions))]
+const WINDOW_HEIGHT: f32 = 2400.0;
+#[cfg(not(debug_assertions))]
+const WINDOW_WIDTH: f32 = 1080.0;
+
 #[derive(Component, Debug)]
 struct Position {
 	x: f64,
@@ -25,7 +35,7 @@ fn main() {
 		.add_plugins(DefaultPlugins.set(WindowPlugin {
 			primary_window: Some(Window {
 				title: "Matcherino".to_string(),
-				resolution: bevy::window::WindowResolution::new(1080.0 * 0.6, 2400.0 * 0.6), // TODO: Remove * 0.6's
+				resolution: bevy::window::WindowResolution::new(WINDOW_WIDTH, WINDOW_HEIGHT),
 				..default()
 			}),
 			..default()
