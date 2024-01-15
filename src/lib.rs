@@ -22,7 +22,7 @@ pub fn start_drag(
 ) {
 	if buttons.just_pressed(MouseButton::Left) {
 		for (sprite_pos, e_id) in query.iter() {
-			let single = &window_query.single();
+			let single = window_query.single();
 			if let Some(m_pos) = single.cursor_position() {
 				let mouse_pos_adjusted = adjust_mouse_pos(m_pos, single);
 
@@ -52,9 +52,9 @@ pub fn time_to_drag(
 ) {
 	//TODO: This function is being run when supposedly no entities have Dragging component
 	for (mut sprite_pos, e_id) in &mut query {
-		let single = &window_query.single();
-		if let Some(m_pos) = single.cursor_position() {
-			let mouse_pos_adjusted = adjust_mouse_pos(m_pos, single);
+		let main_window = &window_query.single();
+		if let Some(m_pos) = main_window.cursor_position() {
+			let mouse_pos_adjusted = adjust_mouse_pos(m_pos, main_window);
 			sprite_pos.translation.x = mouse_pos_adjusted.x;
 			sprite_pos.translation.y = mouse_pos_adjusted.y;
 		}
@@ -64,7 +64,7 @@ pub fn time_to_drag(
 	}
 }
 
-fn adjust_mouse_pos(m_pos: Vec2, single: &&Window) -> Vec3 {
+fn adjust_mouse_pos(m_pos: Vec2, single: &Window) -> Vec3 {
 	let x = m_pos.x - single.width() / 2.0;
 	let y = m_pos.y - single.height() / 2.0;
 	let y = y * -1.0;
