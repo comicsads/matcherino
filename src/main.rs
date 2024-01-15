@@ -1,6 +1,10 @@
 #![allow(dead_code)]
+#![allow(unreachable_code)]
 use bevy::prelude::*;
+use matcherino::*;
 use rand::prelude::*;
+
+mod orb_bundle;
 
 #[cfg(debug_assertions)]
 const WINDOW_HEIGHT: f32 = 2400.0 * 0.6;
@@ -11,24 +15,6 @@ const WINDOW_WIDTH: f32 = 1080.0 * 0.6;
 const WINDOW_HEIGHT: f32 = 2400.0;
 #[cfg(not(debug_assertions))]
 const WINDOW_WIDTH: f32 = 1080.0;
-
-#[derive(Component, Debug)]
-struct Position {
-	x: f64,
-	y: f64,
-}
-
-impl Position {
-	pub fn new(x: f64, y: f64) -> Self {
-		Position { x, y }
-	}
-}
-
-#[derive(Component)]
-struct Draggable;
-
-#[derive(Component)]
-struct Orb;
 
 fn main() {
 	App::new()
@@ -41,12 +27,13 @@ fn main() {
 			..default()
 		}))
 		.add_systems(Startup, setup)
-		.add_systems(Update, update_sprites)
+		.add_systems(Update, matcherino::update_sprites)
 		.run();
 }
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
 	commands.spawn(Camera2dBundle::default());
+	/*
 	commands.spawn((
 		Orb,
 		Position::new(0.0, 0.0),
@@ -60,18 +47,5 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
 			..default()
 		},
 	));
-}
-
-fn move_orbs(time: Res<Time>, mut query: Query<&mut Position, With<Orb>>) {
-	for mut pos in &mut query {
-		pos.x += 50.0 * time.delta_seconds_f64();
-	}
-}
-
-//TODO: This is probably a bad way of getting sprites to follow entities
-fn update_sprites(mut query: Query<(&mut Transform, &Position)>) {
-	for (mut tra, pos) in &mut query {
-		tra.translation.x = pos.x as f32;
-		tra.translation.y = pos.y as f32;
-	}
+	*/
 }
