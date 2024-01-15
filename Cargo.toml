@@ -14,6 +14,6 @@ opt-level = 1
 opt-level = 3
 
 [dependencies]
-bevy = "0.12.1" # uncomment for release/qa building
+# bevy = "0.12.1" # uncomment for release/qa building
 rand = "0.8.5"
-# bevy = { version = "0.12.0", features = ["dynamic_linking"] } # uncomment for fast developing
+bevy = { version = "0.12.1", features = ["dynamic_linking"] } # uncomment for fast developing

@@ -26,8 +26,8 @@ fn main() {
 			}),
 			..default()
 		}))
-		.add_systems(Startup, setup)
-		.add_systems(Update, matcherino::update_sprites)
+		.add_plugins(orb_bundle::OrbPlugin)
+		// .add_systems(Startup, setup)
 		.run();
 }
 
