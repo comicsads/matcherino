@@ -1,5 +1,7 @@
 use bevy::prelude::*;
 
+const GEM_SIZE: f32 = 100.0;
+
 #[derive(Component, Debug)]
 pub struct Position {
 	pub x: f64,
@@ -40,9 +42,9 @@ pub fn start_drag(
 
 				let collide = bevy::sprite::collide_aabb::collide(
 					sprite_pos.translation,
-					Vec2::new(30.0, 30.0),
+					Vec2::new(GEM_SIZE, GEM_SIZE),
 					real_pos,
-					Vec2::new(30.0, 30.0),
+					Vec2::new(GEM_SIZE, GEM_SIZE),
 				);
 
 				match collide {
