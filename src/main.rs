@@ -2,6 +2,7 @@
 #![allow(unreachable_code)]
 use bevy::prelude::*;
 use matcherino::*;
+use orb_bundle::OrbBundle;
 use rand::prelude::*;
 
 mod orb_bundle;
@@ -27,7 +28,7 @@ fn main() {
 			..default()
 		}))
 		.add_plugins(orb_bundle::OrbPlugin)
-		// .add_systems(Startup, setup)
+		.add_systems(Startup, setup)
 		.run();
 }
 
