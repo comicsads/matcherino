@@ -22,7 +22,14 @@ struct Orb;
 
 fn main() {
 	App::new()
-		.add_plugins(DefaultPlugins)
+		.add_plugins(DefaultPlugins.set(WindowPlugin {
+			primary_window: Some(Window {
+				title: "Matcherino".to_string(),
+				resolution: bevy::window::WindowResolution::new(1080.0 * 0.6, 2400.0 * 0.6), // TODO: Remove * 0.6's
+				..default()
+			}),
+			..default()
+		}))
 		.add_systems(Startup, setup)
 		.add_systems(Update, update_sprites)
 		.run();
