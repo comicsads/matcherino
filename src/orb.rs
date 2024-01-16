@@ -14,8 +14,8 @@ pub fn add_orbs(mut commands: Commands, asset_server: Res<AssetServer>) {
 		asset_server.load("sprites/orb.png"),
 	));
 	commands.spawn(OrbBundle::new(
-		100.0,
-		100.0,
+		75.0,
+		75.0,
 		asset_server.load("sprites/orb.png"),
 	));
 }

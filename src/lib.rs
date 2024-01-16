@@ -21,7 +21,7 @@ pub struct Dragging {
 #[derive(Component)]
 pub struct Orb;
 
-/// Apply dragging to any entity mouse clicks
+/// Apply dragging to any entity mouse clicks that has Draggable
 pub fn start_drag(
 	query: Query<(&Transform, Entity), With<Draggable>>,
 	window_query: Query<&Window>,
