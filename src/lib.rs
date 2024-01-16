@@ -42,15 +42,12 @@ pub fn start_drag(
 						Vec2::new(GEM_SIZE, GEM_SIZE),
 					);
 
-					match collide {
-						Some(_) => {
-							commands.entity(e_id).insert(Dragging {
-								start_x: sprite_pos.translation.x,
-								start_y: sprite_pos.translation.y,
-							});
-							break;
-						}
-						None => (),
+					if let Some(_) = collide {
+						commands.entity(e_id).insert(Dragging {
+							start_x: sprite_pos.translation.x,
+							start_y: sprite_pos.translation.y,
+						});
+						break;
 					}
 				}
 			}
@@ -97,6 +94,5 @@ fn adjust_mouse_pos(m_pos: Vec2, single: &Window) -> Vec3 {
 	let y = m_pos.y - single.height() / 2.0;
 	let y = y * -1.0;
 
-	let mouse_pos_adjusted = Vec3::new(x, y, 100.0);
-	mouse_pos_adjusted
+	Vec3::new(x, y, 100.0)
 }
