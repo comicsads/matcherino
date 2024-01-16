@@ -12,11 +12,13 @@ pub fn add_orbs(mut commands: Commands, asset_server: Res<AssetServer>) {
 		0.0,
 		0.0,
 		asset_server.load("sprites/orb.png"),
+		OrbColor::Green,
 	));
 	commands.spawn(OrbBundle::new(
 		75.0,
 		75.0,
 		asset_server.load("sprites/orb.png"),
+		OrbColor::Blue,
 	));
 }
 
@@ -27,8 +29,32 @@ pub struct OrbBundle {
 	drag: Draggable,
 }
 
+pub enum OrbColor {
+	Blue,
+	Green,
+}
+
+impl OrbColor {
+	pub fn to_bevy_color(&self) -> Color {
+		match self {
+			OrbColor::Blue => Color::Rgba {
+				red: 1.0,
+				green: 1.0,
+				blue: 1.0,
+				alpha: 1.0,
+			},
+			OrbColor::Green => Color::Rgba {
+				red: 0.0,
+				green: 1.0,
+				blue: 0.0,
+				alpha: 1.0,
+			},
+		}
+	}
+}
+
 impl OrbBundle {
-	pub fn new(pos_x: f32, pos_y: f32, texture: Handle<Image>) -> Self {
+	pub fn new(pos_x: f32, pos_y: f32, texture: Handle<Image>, c: OrbColor) -> Self {
 		OrbBundle {
 			orb: Orb,
 			sprite: SpriteBundle {
@@ -38,6 +64,10 @@ impl OrbBundle {
 					..default()
 				},
 				texture,
+				sprite: Sprite {
+					color: c.to_bevy_color(),
+					..default()
+				},
 				..default()
 			},
 			drag: Draggable,
