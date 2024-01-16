@@ -6,9 +6,12 @@ pub use orb::OrbPlugin;
 const GEM_SIZE: f32 = 75.0;
 const GRID_SIZE: f32 = GEM_SIZE;
 
+/// If an entity can be dragged it will have this Component
 #[derive(Component)]
 pub struct Draggable;
 
+/// If entity is currently being dragged.
+/// Stores the coords where dragging begun.
 #[derive(Component)]
 pub struct Dragging {
 	start_x: f32,
@@ -18,6 +21,7 @@ pub struct Dragging {
 #[derive(Component)]
 pub struct Orb;
 
+/// Apply dragging to any entity mouse clicks
 pub fn start_drag(
 	query: Query<(&Transform, Entity), With<Draggable>>,
 	window_query: Query<&Window>,
@@ -54,6 +58,7 @@ pub fn start_drag(
 	}
 }
 
+/// Dragging orbs functionality
 pub fn time_to_drag(
 	mut query: Query<(&mut Transform, Entity, &Dragging)>,
 	window_query: Query<&Window>,
@@ -86,6 +91,7 @@ pub fn time_to_drag(
 	}
 }
 
+/// Converts raw mouse position to coords in window
 fn adjust_mouse_pos(m_pos: Vec2, single: &Window) -> Vec3 {
 	let x = m_pos.x - single.width() / 2.0;
 	let y = m_pos.y - single.height() / 2.0;
