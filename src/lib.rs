@@ -75,11 +75,17 @@ pub fn time_to_drag(
 			let dist_dragged_y = dist_dragged_y.abs();
 
 			if dist_dragged_x > dist_dragged_y {
-				sprite_pos.translation.x = (mouse_pos_adjusted.x / GRID_SIZE).round() * GRID_SIZE;
+				let clamped_mouse_pos = mouse_pos_adjusted
+					.x
+					.clamp(drag.start_x - GRID_SIZE, drag.start_x + GRID_SIZE);
+				sprite_pos.translation.x = (clamped_mouse_pos / GRID_SIZE).round() * GRID_SIZE;
 				sprite_pos.translation.y = drag.start_y;
 			} else {
+				let clamped_mouse_pos = mouse_pos_adjusted
+					.y
+					.clamp(drag.start_y - GRID_SIZE, drag.start_y + GRID_SIZE);
 				sprite_pos.translation.x = drag.start_x;
-				sprite_pos.translation.y = (mouse_pos_adjusted.y / GRID_SIZE).round() * GRID_SIZE;
+				sprite_pos.translation.y = (clamped_mouse_pos / GRID_SIZE).round() * GRID_SIZE;
 			}
 		}
 		if !buttons.pressed(MouseButton::Left) {
