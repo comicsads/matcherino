@@ -27,8 +27,10 @@ pub struct OrbBundle {
 	orb: Orb,
 	sprite: SpriteBundle,
 	drag: Draggable,
+	color: OrbColor,
 }
 
+#[derive(Component)]
 pub enum OrbColor {
 	Blue,
 	Green,
@@ -54,7 +56,7 @@ impl OrbColor {
 }
 
 impl OrbBundle {
-	pub fn new(pos_x: f32, pos_y: f32, texture: Handle<Image>, c: OrbColor) -> Self {
+	pub fn new(pos_x: f32, pos_y: f32, texture: Handle<Image>, color: OrbColor) -> Self {
 		OrbBundle {
 			orb: Orb,
 			sprite: SpriteBundle {
@@ -65,12 +67,13 @@ impl OrbBundle {
 				},
 				texture,
 				sprite: Sprite {
-					color: c.to_bevy_color(),
+					color: color.to_bevy_color(),
 					..default()
 				},
 				..default()
 			},
 			drag: Draggable,
+			color,
 		}
 	}
 }
