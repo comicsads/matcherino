@@ -119,6 +119,20 @@ pub fn time_to_drag(
 	}
 }
 
+fn am_being_dragged(
+	mut events: EventReader<DragMoved>,
+	mut query: Query<&mut Transform, (With<Orb>, Without<Dragging>)>,
+) {
+	for my_event in events.read() {
+		for mut tra in &mut query {
+			if my_event.current.x == tra.translation.x || my_event.current.y == tra.translation.y {
+				tra.translation.x = my_event.started.x;
+				tra.translation.y = my_event.started.y;
+			}
+		}
+	}
+}
+
 /// Converts raw mouse position to coords in window
 fn adjust_mouse_pos(m_pos: Vec2, single: &Window) -> Vec3 {
 	let x = m_pos.x - single.width() / 2.0;

@@ -4,7 +4,9 @@ pub struct OrbPlugin;
 
 impl Plugin for OrbPlugin {
 	fn build(&self, app: &mut App) {
-		app.add_systems(Startup, add_orbs).add_event::<DragMoved>();
+		app.add_systems(Startup, add_orbs)
+			.add_event::<DragMoved>()
+			.add_systems(Update, am_being_dragged);
 	}
 }
 pub fn add_orbs(mut commands: Commands, asset_server: Res<AssetServer>) {
@@ -15,7 +17,7 @@ pub fn add_orbs(mut commands: Commands, asset_server: Res<AssetServer>) {
 		OrbColor::Green,
 	));
 	commands.spawn(OrbBundle::new(
-		75.0,
+		0.0,
 		75.0,
 		asset_server.load("sprites/orb.png"),
 		OrbColor::Blue,
