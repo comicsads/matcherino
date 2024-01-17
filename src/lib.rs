@@ -6,6 +6,17 @@ pub use orb::OrbPlugin;
 const GEM_SIZE: f32 = 75.0;
 const GRID_SIZE: f32 = GEM_SIZE;
 
+pub struct Point {
+	x: f32,
+	y: f32,
+}
+
+#[derive(Event)]
+pub struct DragMoved {
+	pub started: Point,
+	pub current: Point,
+}
+
 /// If an entity can be dragged it will have this Component
 #[derive(Component)]
 pub struct Draggable;
@@ -61,6 +72,7 @@ pub fn time_to_drag(
 	window_query: Query<&Window>,
 	buttons: Res<Input<MouseButton>>,
 	mut commands: Commands,
+	mut send_event_orb_dragged: EventWriter<DragMoved>,
 ) {
 	//TODO: This function is being run when supposedly no entities have Dragging component
 	for (mut sprite_pos, e_id, drag) in &mut query {
@@ -86,6 +98,19 @@ pub fn time_to_drag(
 					.clamp(drag.start_y - GRID_SIZE, drag.start_y + GRID_SIZE);
 				sprite_pos.translation.x = drag.start_x;
 				sprite_pos.translation.y = (clamped_mouse_pos / GRID_SIZE).round() * GRID_SIZE;
+			}
+			if drag.start_x != sprite_pos.translation.x || drag.start_y != sprite_pos.translation.y
+			{
+				send_event_orb_dragged.send(DragMoved {
+					current: Point {
+						x: sprite_pos.translation.x,
+						y: sprite_pos.translation.y,
+					},
+					started: Point {
+						x: drag.start_x,
+						y: drag.start_y,
+					},
+				});
 			}
 		}
 		if !buttons.pressed(MouseButton::Left) {

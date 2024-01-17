@@ -4,7 +4,7 @@ pub struct OrbPlugin;
 
 impl Plugin for OrbPlugin {
 	fn build(&self, app: &mut App) {
-		app.add_systems(Startup, add_orbs);
+		app.add_systems(Startup, add_orbs).add_event::<DragMoved>();
 	}
 }
 pub fn add_orbs(mut commands: Commands, asset_server: Res<AssetServer>) {
