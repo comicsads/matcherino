@@ -25,8 +25,7 @@ pub struct Draggable;
 /// Stores the coords where dragging begun.
 #[derive(Component)]
 pub struct Dragging {
-	start_x: f32,
-	start_y: f32,
+	p: Point,
 }
 
 #[derive(Component)]
@@ -55,8 +54,10 @@ pub fn start_drag(
 
 					if let Some(_) = collide {
 						commands.entity(e_id).insert(Dragging {
-							start_x: sprite_pos.translation.x,
-							start_y: sprite_pos.translation.y,
+							p: Point {
+								x: sprite_pos.translation.x,
+								y: sprite_pos.translation.y,
+							},
 						});
 						break;
 					}
@@ -80,8 +81,8 @@ pub fn time_to_drag(
 		if let Some(m_pos) = main_window.cursor_position() {
 			let mouse_pos_adjusted = adjust_mouse_pos(m_pos, main_window);
 
-			let dist_dragged_x = drag.start_x - mouse_pos_adjusted.x;
-			let dist_dragged_y = drag.start_y - mouse_pos_adjusted.y;
+			let dist_dragged_x = drag.p.x - mouse_pos_adjusted.x;
+			let dist_dragged_y = drag.p.y - mouse_pos_adjusted.y;
 
 			let dist_dragged_x = dist_dragged_x.abs();
 			let dist_dragged_y = dist_dragged_y.abs();
@@ -89,26 +90,25 @@ pub fn time_to_drag(
 			if dist_dragged_x > dist_dragged_y {
 				let clamped_mouse_pos = mouse_pos_adjusted
 					.x
-					.clamp(drag.start_x - GRID_SIZE, drag.start_x + GRID_SIZE);
+					.clamp(drag.p.x - GRID_SIZE, drag.p.x + GRID_SIZE);
 				sprite_pos.translation.x = (clamped_mouse_pos / GRID_SIZE).round() * GRID_SIZE;
-				sprite_pos.translation.y = drag.start_y;
+				sprite_pos.translation.y = drag.p.y;
 			} else {
 				let clamped_mouse_pos = mouse_pos_adjusted
 					.y
-					.clamp(drag.start_y - GRID_SIZE, drag.start_y + GRID_SIZE);
-				sprite_pos.translation.x = drag.start_x;
+					.clamp(drag.p.y - GRID_SIZE, drag.p.y + GRID_SIZE);
+				sprite_pos.translation.x = drag.p.x;
 				sprite_pos.translation.y = (clamped_mouse_pos / GRID_SIZE).round() * GRID_SIZE;
 			}
-			if drag.start_x != sprite_pos.translation.x || drag.start_y != sprite_pos.translation.y
-			{
+			if drag.p.x != sprite_pos.translation.x || drag.p.y != sprite_pos.translation.y {
 				send_event_orb_dragged.send(DragMoved {
 					current: Point {
 						x: sprite_pos.translation.x,
 						y: sprite_pos.translation.y,
 					},
 					started: Point {
-						x: drag.start_x,
-						y: drag.start_y,
+						x: drag.p.x,
+						y: drag.p.y,
 					},
 				});
 			}
